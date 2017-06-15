@@ -1,47 +1,35 @@
-import Foundation
-
 class FeedService {
+    
+    let accessTokenRepo = AccessTokenRepository()
+    let newAccessTokenFetcher = NewAccessTokenFetcher()
 
     private func fetchNewAccessToken() {
-        
+        newAccessTokenFetcher.fetchNewAccessToken()
     }
     
     private func getCachedAccessToken() -> AccessToken? {
-        return nil
+        return accessTokenRepo.getCachedAccessToken()
     }
     
     private func cacheAccessToken(accessToken: AccessToken) {
+        accessTokenRepo.cache(accessToken: accessToken)
+    }
+}
+
+class NewAccessTokenFetcher {
+    
+    func fetchNewAccessToken() -> Void {
         
     }
 }
 
-struct AccessToken {
+class AccessTokenRepository {
     
-    let accessToken: String
-}
-
-extension AccessToken {
-    
-    init(json:[String:Any]) {
-        // QUESTION: what if the access_token is not present, can I throw an exception?
-        self.accessToken = json["access_token"] as! String
+    func getCachedAccessToken() -> AccessToken? {
+        return nil
     }
-}
-
-struct FeedItem {
     
-    let avatarUrl: String
-    let displayName: String
-    let time: String
-    let body: String
-}
-
-extension FeedItem {
-    
-    init(json:[String:Any]) {
-        self.avatarUrl = ""
-        self.displayName = ""
-        self.time = ""
-        self.body = ""
+    func cache(accessToken: AccessToken) {
+        
     }
 }
