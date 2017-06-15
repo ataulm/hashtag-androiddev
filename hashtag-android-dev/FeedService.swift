@@ -3,21 +3,23 @@ import Foundation
 class FeedService {
     
     // TODO: these dependencies can be passed via init
+    private let apiKey = Secrets.TWITTER_API_KEY
+    private let apiSecret = Secrets.TWITTER_API_SECRET
     private let accessTokenRepo = AccessTokenRepository()
     private let newAccessTokenFetcher = NewAccessTokenFetcher()
     private let feedItemsFetcher = FeedItemsFetcher()
 
     public func fetchFeed(onComplete:@escaping ([FeedItem]) -> ()) {
         if let accessToken = getCachedAccessToken() {
+            print("...using cached access token")
             feedItemsFetcher.fetchFeed(accessToken: accessToken) { feedItems in
-                print("fetched feedItems, count: " + String(feedItems.count))
                 onComplete(feedItems)
             }
         } else {
-            newAccessTokenFetcher.fetchNewAccessToken() { accessToken in
-                print("using new accessToken to fetch feedItems")
+            newAccessTokenFetcher.fetchNewAccessToken(apiKey: apiKey, apiSecret: apiSecret) { accessToken in
+                print("...fetched new access token")
+                self.cacheAccessToken(accessToken: accessToken)
                 self.feedItemsFetcher.fetchFeed(accessToken: accessToken) { feedItems in
-                    print("fetched feedItems, count: " + String(feedItems.count))
                     onComplete(feedItems)
                 }
             }
@@ -42,10 +44,33 @@ private class FeedItemsFetcher {
 
 private class NewAccessTokenFetcher {
     
-    func fetchNewAccessToken(onComplete:@escaping (AccessToken) -> ()) {
-        let accessToken = AccessToken(rawAccessToken: "TODO fetch this from the network")
-        onComplete(accessToken)
+    private static let AUTH_ENDPOINT = URL(string: "https://api.twitter.com/oauth2/token")!
+    
+    func fetchNewAccessToken(apiKey: String, apiSecret: String, onComplete:@escaping (AccessToken) -> ()) {
+        URLSession.shared.dataTask(with: createRequest(apiKey: apiKey, apiSecret: apiSecret)) {data, response, err in
+            if data != nil {
+                if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as! [String:Any?] {
+                    let accessToken = AccessToken(json: json)
+                    onComplete(accessToken)
+                }
+            }
+        }.resume()
     }
+    
+    private func createRequest(apiKey: String, apiSecret: String) -> URLRequest {
+        let urlEncodedApiKey = apiKey.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let urlEncodedApiSecret = apiSecret.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        let bearerToken = urlEncodedApiKey + ":" + urlEncodedApiSecret
+        let bearerTokenCredentials = bearerToken.data(using: .utf8)!.base64EncodedString()
+        
+        var request = URLRequest(url: NewAccessTokenFetcher.AUTH_ENDPOINT)
+        request.httpMethod = "POST"
+        request.addValue("Basic " + bearerTokenCredentials, forHTTPHeaderField: "Authorization")
+        request.addValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "grant_type=client_credentials".data(using: .utf8)
+        return request
+    }
+    
 }
 
 private class AccessTokenRepository {

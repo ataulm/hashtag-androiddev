@@ -9,8 +9,7 @@ extension AccessToken {
         self.accessToken = rawAccessToken
     }
     
-    init(json:[String:Any]) {
-        // QUESTION: what if the access_token is not present, can I throw an exception?
+    init(json:[String:Any?]) {
         self.accessToken = json["access_token"] as! String
     }
 }
