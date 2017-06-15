@@ -1,24 +1,14 @@
-//
-//  ViewController.swift
-//  hashtag-android-dev
-//
-//  Created by Ataul Munim on 15/06/2017.
-//  Copyright © 2017 Ataul Munim. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let feedService = FeedService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        feedService.fetchFeed() { feedItems in
+            print("viewDidLoad feedService fetched all the feedItems, count: " + String(feedItems.count))
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 }
 
