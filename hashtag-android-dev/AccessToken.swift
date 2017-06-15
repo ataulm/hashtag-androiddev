@@ -1,15 +1,15 @@
 struct AccessToken {
     
-    let accessToken: String
+    let raw: String
 }
 
 extension AccessToken {
     
     init(rawAccessToken:String) {
-        self.accessToken = rawAccessToken
+        self.raw = rawAccessToken
     }
     
     init(json:[String:Any?]) {
-        self.accessToken = json["access_token"] as! String
+        self.raw = json["access_token"] as! String
     }
 }

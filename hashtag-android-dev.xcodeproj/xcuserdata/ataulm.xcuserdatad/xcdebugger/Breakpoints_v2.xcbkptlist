@@ -2,4 +2,54 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "hashtag-android-dev/FeedService.swift"
+            timestampString = "519237037.549943"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "fetchFeed(accessToken:onComplete:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "hashtag_android_dev.(FeedItemsFetcher in _8478F35A286E40FA63A14EE27389BB15).(fetchFeed (accessToken : hashtag_android_dev.AccessToken, onComplete : (Swift.Array&lt;hashtag_android_dev.FeedItem&gt;) -&gt; ()) -&gt; ()).(closure #1)"
+                  moduleName = "hashtag-android-dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ataulm/dev/hashtag-androiddev/hashtag-android-dev/FeedService.swift"
+                  timestampString = "519237047.367344"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "527">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "hashtag_android_dev.(FeedItemsFetcher in _8478F35A286E40FA63A14EE27389BB15).(fetchFeed (accessToken : hashtag_android_dev.AccessToken, onComplete : (Swift.Array&lt;hashtag_android_dev.FeedItem&gt;) -&gt; ()) -&gt; ()).(closure #1)"
+                  moduleName = "hashtag-android-dev"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/ataulm/dev/hashtag-androiddev/hashtag-android-dev/FeedService.swift"
+                  timestampString = "519237047.368946"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "1139">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

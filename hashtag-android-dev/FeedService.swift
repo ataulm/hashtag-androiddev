@@ -35,16 +35,40 @@ class FeedService {
     }
 }
 
+
+
 private class FeedItemsFetcher {
     
+    private static let ENDPOINT = URL(string: "https://api.twitter.com/statuses/user_timeline?screen_name=androiddevrtbot&include_rts=true")!
+    
     func fetchFeed(accessToken: AccessToken, onComplete:@escaping ([FeedItem]) -> ()) {
-        onComplete([])
+        URLSession.shared.dataTask(with: createRequest(accessToken: accessToken)) {data, response, err in
+            print("0")
+            if data != nil {
+                print("1")
+                if let json = try? JSONSerialization.jsonObject(with: data!, options: []) as! [Any] {
+                    print("hello")
+                    print(json)
+                    print("goodbye")
+                    onComplete([])
+                }
+            }
+            print("2")
+            }.resume()
+    }
+    
+    private func createRequest(accessToken: AccessToken) -> URLRequest {
+        var request = URLRequest(url: FeedItemsFetcher.ENDPOINT)
+        request.httpMethod = "GET"
+        request.addValue("Bearer " + accessToken.raw, forHTTPHeaderField: "Authorization")
+        request.addValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")
+        return request
     }
 }
 
 private class NewAccessTokenFetcher {
     
-    private static let AUTH_ENDPOINT = URL(string: "https://api.twitter.com/oauth2/token")!
+    private static let ENDPOINT = URL(string: "https://api.twitter.com/oauth2/token")!
     
     func fetchNewAccessToken(apiKey: String, apiSecret: String, onComplete:@escaping (AccessToken) -> ()) {
         URLSession.shared.dataTask(with: createRequest(apiKey: apiKey, apiSecret: apiSecret)) {data, response, err in
@@ -63,7 +87,7 @@ private class NewAccessTokenFetcher {
         let bearerToken = urlEncodedApiKey + ":" + urlEncodedApiSecret
         let bearerTokenCredentials = bearerToken.data(using: .utf8)!.base64EncodedString()
         
-        var request = URLRequest(url: NewAccessTokenFetcher.AUTH_ENDPOINT)
+        var request = URLRequest(url: NewAccessTokenFetcher.ENDPOINT)
         request.httpMethod = "POST"
         request.addValue("Basic " + bearerTokenCredentials, forHTTPHeaderField: "Authorization")
         request.addValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")

@@ -8,10 +8,10 @@ struct FeedItem {
 
 extension FeedItem {
     
-    init(json:[String:Any]) {
-        self.avatarUrl = ""
-        self.displayName = ""
+    init(json:[String:Any?]) {
+        self.avatarUrl = (json["user"] as! [String:Any?])["profile_image_url_https"] as! String
+        self.displayName = (json["user"] as! [String:Any?])["name"] as! String
         self.time = ""
-        self.body = ""
+        self.body = json["text"] as! String
     }
 }
